@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">Product — Adorna Style</title>
+  <meta name="description" id="meta-description" content="Shop fashion jewelry and accessories at Adorna Style.">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="Adorna Style">
+  <meta property="og:title" id="og-title" content="Adorna Style">
+  <meta property="og:description" id="og-description" content="Shop fashion jewelry and accessories at Adorna Style.">
+  <meta property="og:image" id="og-image" content="https://adornastyle.com/images/brand/hero-new-arrivals.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="announcement-bar">✨ Free delivery across Pakistan on orders above Rs. 2,500</div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/brand/logo.png" alt="Adorna Style logo">
+        <div>
+          <div class="brand-name">Adorna Style</div>
+          <span class="brand-tagline">Be Your Own Kind of Beautiful</span>
+        </div>
+      </a>
+      <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/shop.html">Shop All</a>
+        <a href="/shop.html?category=necklaces">Necklaces</a>
+        <a href="/shop.html?category=earrings">Earrings</a>
+        <a href="/shop.html?category=bags">Bags</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/cart.html" class="icon-btn" aria-label="Cart">
+          🛍️
+          <span class="cart-count" data-cart-count>0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb">
+    <div class="container">
+      <a href="/">Home</a> / <a href="/shop.html">Shop</a> / <span id="crumb-name">Product</span>
+    </div>
+  </div>
+
+  <div id="product-root" class="container">
+    <p style="padding: 60px 0; text-align:center; color:#8a7570;">Loading…</p>
+  </div>
+
+  <section class="product-section">
+    <div class="container">
+      <div class="section-heading">
+        <h2>You May Also Like</h2>
+      </div>
+      <div class="product-grid" id="related-products"></div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="/images/brand/logo.png" alt="Adorna Style">
+            <span>Adorna Style</span>
+          </div>
+          <p>Discover stylish, affordable fashion accessories from statement jewelry to trendy bags.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61594183071740" target="_blank" rel="noopener">FB</a>
+            <a href="https://instagram.com/adornastyle.official" target="_blank" rel="noopener">IG</a>
+          </div>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="/shop.html?category=necklaces">Necklaces</a></li>
+            <li><a href="/shop.html?category=earrings">Earrings</a></li>
+            <li><a href="/shop.html?category=bracelets">Bracelets</a></li>
+            <li><a href="/shop.html?category=rings">Rings</a></li>
+            <li><a href="/shop.html?category=bags">Bags</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <ul>
+            <li><a href="/cart.html">My Cart</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="mailto:ab732099@gmail.com">Contact Us</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="/refund-policy.html">Return &amp; Refund Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>📞 +971 54 295 7698</p>
+          <p>✉️ ab732099@gmail.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Adorna Style. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="/js/cart.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/render.js"></script>
+  <script>
+    (async function () {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const root = document.getElementById('product-root');
+
+      if (!id) {
+        root.innerHTML = '<div class="empty-state"><span class="emoji">🔍</span><p>Product not found.</p></div>';
+        return;
+      }
+
+      const product = await Api.getProduct(id);
+      if (!product) {
+        root.innerHTML = '<div class="empty-state"><span class="emoji">🔍</span><p>This product could not be found.</p></div>';
+        return;
+      }
+
+      document.getElementById('page-title').textContent = `${product.name} — Adorna Style`;
+      document.getElementById('crumb-name').textContent = product.name;
+      document.getElementById('meta-description').setAttribute('content', product.description);
+      document.getElementById('og-title').setAttribute('content', `${product.name} — Adorna Style`);
+      document.getElementById('og-description').setAttribute('content', product.description);
+      document.getElementById('og-image').setAttribute('content', window.location.origin + product.image);
+
+      root.innerHTML = `
+        <div class="product-detail">
+          <div class="gallery">
+            <img src="${product.image}" alt="${product.name}">
+          </div>
+          <div>
+            <div class="category-label">${product.category}</div>
+            <h1>${product.name}</h1>
+            <div class="price">${formatPKR(product.price)}</div>
+            <p class="desc">${product.description}</p>
+            ${product.material ? `<p class="material">Material: ${product.material}</p>` : ''}
+            ${product.inStock === false ? `
+            <p style="color:#c0555f; font-weight:600; margin-bottom:18px;">😔 Currently Out of Stock</p>
+            <button class="btn btn-outline btn-block" disabled>Out of Stock</button>
+            ` : `
+            <div class="qty-row">
+              <div class="qty-control">
+                <button type="button" id="qty-minus">−</button>
+                <input type="text" id="qty-input" value="1" readonly>
+                <button type="button" id="qty-plus">+</button>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-block" id="add-to-cart-btn">Add to Bag — ${formatPKR(product.price)}</button>
+            `}
+            <div class="trust-badges">
+              <span class="badge">🚚 Fast delivery nationwide</span>
+              <span class="badge">💳 COD, JazzCash &amp; Easypaisa</span>
+              <span class="badge">↩️ Easy returns</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      let qty = 1;
+      const qtyInput = document.getElementById('qty-input');
+      const addBtn = document.getElementById('add-to-cart-btn');
+      if (qtyInput && addBtn) {
+        document.getElementById('qty-minus').addEventListener('click', () => {
+          qty = Math.max(1, qty - 1);
+          qtyInput.value = qty;
+        });
+        document.getElementById('qty-plus').addEventListener('click', () => {
+          qty += 1;
+          qtyInput.value = qty;
+        });
+        addBtn.addEventListener('click', () => {
+          addToCart(product.id, qty);
+          showToast('Added to your bag ✨');
+        });
+      }
+
+      const allProducts = await Api.getProducts(product.category);
+      const related = allProducts.filter((p) => p.id !== product.id).slice(0, 4);
+      renderProductGrid(document.getElementById('related-products'), related);
+    })();
+  </script>
+</body>
+</html>

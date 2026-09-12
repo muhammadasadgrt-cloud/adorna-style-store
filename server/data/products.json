@@ -1,0 +1,102 @@
+[
+  {
+    "id": "aria-layered-necklace",
+    "name": "Aria Layered Necklace",
+    "category": "necklaces",
+    "price": 1490,
+    "image": "/images/products/aria-layered-necklace.png",
+    "description": "Delicate gold-toned layered necklace with a dainty pendant — an everyday statement piece that pairs with anything.",
+    "material": "18k gold-plated brass",
+    "inStock": true
+  },
+  {
+    "id": "timeless-pendant-necklace",
+    "name": "Timeless Pendant Necklace",
+    "category": "necklaces",
+    "price": 1690,
+    "image": "/images/products/timeless-pendant-necklace.png",
+    "description": "Minimalist pendant on a fine chain, featured in the Adorna Style launch collection — \"timeless beauty, made to shine\".",
+    "material": "18k gold-plated brass",
+    "inStock": true
+  },
+  {
+    "id": "blossom-drop-earrings",
+    "name": "Blossom Drop Earrings",
+    "category": "earrings",
+    "price": 990,
+    "image": "/images/products/blossom-drop-earrings.png",
+    "description": "Rose-gold drop earrings with a soft floral charm — lightweight enough for all-day wear.",
+    "material": "Rose-gold plated alloy",
+    "inStock": true
+  },
+  {
+    "id": "adorna-signature-hoops",
+    "name": "Adorna Signature Hoops",
+    "category": "earrings",
+    "price": 890,
+    "image": "/images/products/adorna-signature-hoops.png",
+    "description": "Classic medium hoops with a brushed-gold finish — the brand's everyday hero piece.",
+    "material": "Gold-plated stainless steel",
+    "inStock": true
+  },
+  {
+    "id": "everyday-stud-set",
+    "name": "Everyday Stud Set (3 pairs)",
+    "category": "earrings",
+    "price": 1090,
+    "image": "/images/products/everyday-stud-set.png",
+    "description": "Three pairs of simple studs (pearl, crystal, gold ball) for everyday mixing and matching.",
+    "material": "Gold-plated alloy, faux pearl, crystal",
+    "inStock": true
+  },
+  {
+    "id": "stackable-bangle-set",
+    "name": "Stackable Bangle Set (3-pc)",
+    "category": "bracelets",
+    "price": 1290,
+    "image": "/images/products/stackable-bangle-set.png",
+    "description": "Set of 3 stackable bangles in mixed rose-gold and matte-gold finishes — mix, match, and stack.",
+    "material": "Rose-gold & gold plated alloy",
+    "inStock": true
+  },
+  {
+    "id": "charm-chain-bracelet",
+    "name": "Charm Chain Bracelet",
+    "category": "bracelets",
+    "price": 990,
+    "image": "/images/products/charm-chain-bracelet.png",
+    "description": "Delicate chain bracelet with a single heart charm — a soft, romantic everyday accessory.",
+    "material": "Gold-plated brass",
+    "inStock": true
+  },
+  {
+    "id": "statement-cocktail-ring",
+    "name": "Statement Cocktail Ring",
+    "category": "rings",
+    "price": 1190,
+    "image": "/images/products/statement-cocktail-ring.png",
+    "description": "Bold stone-set cocktail ring designed to be the focal point of any outfit.",
+    "material": "Gold-plated alloy, glass stone",
+    "inStock": true
+  },
+  {
+    "id": "quilted-chain-mini-bag",
+    "name": "Quilted Chain Mini Bag",
+    "category": "bags",
+    "price": 3490,
+    "image": "/images/products/quilted-chain-mini-bag.png",
+    "description": "Trendy quilted mini shoulder bag with a gold chain strap — the \"trendy bags\" side of the Adorna Style line.",
+    "material": "Vegan leather, gold-tone hardware",
+    "inStock": true
+  },
+  {
+    "id": "everyday-tote-bag",
+    "name": "Everyday Tote Bag",
+    "category": "bags",
+    "price": 2990,
+    "image": "/images/products/everyday-tote-bag.png",
+    "description": "Structured everyday tote in blush pink or neutral tones, sized for daily essentials.",
+    "material": "Vegan leather",
+    "inStock": true
+  }
+]

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /admin.html
+Disallow: /order-success.html
+Disallow: /order-failed.html
+
+Sitemap: https://adornastyle.com/sitemap.xml

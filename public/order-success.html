@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmed — Adorna Style</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/brand/logo.png" alt="Adorna Style logo">
+        <div>
+          <div class="brand-name">Adorna Style</div>
+          <span class="brand-tagline">Be Your Own Kind of Beautiful</span>
+        </div>
+      </a>
+    </div>
+  </header>
+
+  <div class="status-page success">
+    <div class="emoji-circle">🎉</div>
+    <h1>Thank you for your order!</h1>
+    <p id="status-message">Your order has been placed successfully. We'll reach out shortly to confirm delivery.</p>
+    <div class="order-id-box" id="order-id-box">Order #—</div>
+    <div id="order-summary"></div>
+    <div class="hero-actions" style="justify-content:center; margin-top: 20px;">
+      <a href="#" id="whatsapp-confirm-btn" class="btn btn-primary" target="_blank" rel="noopener" style="display:none;">💬 Confirm on WhatsApp</a>
+    </div>
+    <div class="hero-actions" style="justify-content:center; margin-top: 12px;">
+      <a href="/shop.html" class="btn btn-outline">Continue Shopping</a>
+      <a href="/" class="btn btn-outline">Back to Home</a>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <a href="/privacy-policy.html">Privacy Policy</a> · <a href="/terms.html">Terms</a> · <a href="/refund-policy.html">Refund Policy</a><br>
+        © 2026 Adorna Style. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/cart.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    (async function () {
+      const params = new URLSearchParams(window.location.search);
+      const orderId = params.get('orderId');
+      if (!orderId) return;
+      document.getElementById('order-id-box').textContent = `Order #${orderId}`;
+
+      const order = await Api.getOrder(orderId);
+      if (order) {
+        const itemsList = order.items.map((i) => `${i.name} × ${i.qty}`).join(', ');
+        document.getElementById('order-summary').innerHTML = `
+          <p style="color:#8a7570; font-size: 14px;">${itemsList}</p>
+          <p style="font-weight:600;">Total: ${formatPKR(order.total)} — ${order.paymentMethod === 'cod' ? 'Cash on Delivery' : order.paymentMethod.charAt(0).toUpperCase() + order.paymentMethod.slice(1)}</p>
+        `;
+
+        // Pre-filled WhatsApp message so the customer can confirm their order in one tap.
+        const WHATSAPP_NUMBER = '971542957698'; // Adorna Style contact, no + or spaces
+        const message =
+          `Hi Adorna Style! I'd like to confirm my order.\n` +
+          `Order #: ${order.id}\n` +
+          `Items: ${itemsList}\n` +
+          `Total: ${formatPKR(order.total)} (${order.paymentMethod === 'cod' ? 'Cash on Delivery' : order.paymentMethod})`;
+        const waBtn = document.getElementById('whatsapp-confirm-btn');
+        waBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+        waBtn.style.display = 'inline-flex';
+      }
+    })();
+  </script>
+</body>
+</html>

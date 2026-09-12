@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Bag — Adorna Style</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="announcement-bar">✨ Free delivery across Pakistan on orders above Rs. 2,500</div>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/brand/logo.png" alt="Adorna Style logo">
+        <div>
+          <div class="brand-name">Adorna Style</div>
+          <span class="brand-tagline">Be Your Own Kind of Beautiful</span>
+        </div>
+      </a>
+      <nav class="main-nav">
+        <a href="/">Home</a>
+        <a href="/shop.html">Shop All</a>
+        <a href="/shop.html?category=necklaces">Necklaces</a>
+        <a href="/shop.html?category=earrings">Earrings</a>
+        <a href="/shop.html?category=bags">Bags</a>
+      </nav>
+      <div class="header-actions">
+        <a href="/cart.html" class="icon-btn" aria-label="Cart">
+          🛍️
+          <span class="cart-count" data-cart-count>0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <div class="page-header">
+    <div class="container">
+      <h1>Your Bag</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="cart-layout" id="cart-layout">
+      <div id="cart-items"></div>
+      <div class="summary-card" id="summary-card" style="display:none;">
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span id="summary-subtotal">Rs. 0</span>
+        </div>
+        <div class="summary-row">
+          <span>Delivery</span>
+          <span id="summary-delivery">Free</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total</span>
+          <span id="summary-total">Rs. 0</span>
+        </div>
+        <a href="/checkout.html" class="btn btn-primary btn-block" style="margin-top:18px;">Proceed to Checkout</a>
+        <a href="/shop.html" class="btn btn-outline btn-block" style="margin-top:10px;">Continue Shopping</a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="/images/brand/logo.png" alt="Adorna Style">
+            <span>Adorna Style</span>
+          </div>
+          <p>Discover stylish, affordable fashion accessories from statement jewelry to trendy bags.</p>
+          <div class="social-links">
+            <a href="https://www.facebook.com/profile.php?id=61594183071740" target="_blank" rel="noopener">FB</a>
+            <a href="https://instagram.com/adornastyle.official" target="_blank" rel="noopener">IG</a>
+          </div>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="/shop.html?category=necklaces">Necklaces</a></li>
+            <li><a href="/shop.html?category=earrings">Earrings</a></li>
+            <li><a href="/shop.html?category=bracelets">Bracelets</a></li>
+            <li><a href="/shop.html?category=rings">Rings</a></li>
+            <li><a href="/shop.html?category=bags">Bags</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <ul>
+            <li><a href="/cart.html">My Cart</a></li>
+            <li><a href="/checkout.html">Checkout</a></li>
+            <li><a href="mailto:ab732099@gmail.com">Contact Us</a></li>
+            <li><a href="/privacy-policy.html">Privacy Policy</a></li>
+            <li><a href="/terms.html">Terms &amp; Conditions</a></li>
+            <li><a href="/refund-policy.html">Return &amp; Refund Policy</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <p>📞 +971 54 295 7698</p>
+          <p>✉️ ab732099@gmail.com</p>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 Adorna Style. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script src="/js/cart.js"></script>
+  <script src="/js/api.js"></script>
+  <script>
+    (async function () {
+      const itemsRoot = document.getElementById('cart-items');
+      const summaryCard = document.getElementById('summary-card');
+
+      async function render() {
+        const cart = getCart();
+        if (!cart.length) {
+          itemsRoot.innerHTML = `
+            <div class="empty-state">
+              <span class="emoji">🛍️</span>
+              <p>Your bag is empty. Let's fix that!</p>
+              <a href="/shop.html" class="btn btn-primary" style="margin-top:14px;">Start Shopping</a>
+            </div>`;
+          summaryCard.style.display = 'none';
+          return;
+        }
+
+        const products = await Api.getProducts();
+        const productMap = Object.fromEntries(products.map((p) => [p.id, p]));
+
+        let subtotal = 0;
+        const rows = cart
+          .map((item) => {
+            const product = productMap[item.id];
+            if (!product) return '';
+            const lineTotal = product.price * item.qty;
+            subtotal += lineTotal;
+            return `
+              <div class="cart-item" data-id="${product.id}">
+                <a href="/product.html?id=${product.id}"><img src="${product.image}" alt="${product.name}"></a>
+                <div>
+                  <a href="/product.html?id=${product.id}" class="name">${product.name}</a>
+                  <div class="unit-price">${formatPKR(product.price)} each</div>
+                  <div class="qty-control" style="margin-top:8px;">
+                    <button type="button" data-qty-minus>−</button>
+                    <input type="text" value="${item.qty}" readonly>
+                    <button type="button" data-qty-plus>+</button>
+                  </div>
+                </div>
+                <div class="line-right">
+                  <strong>${formatPKR(lineTotal)}</strong>
+                  <span class="remove-link" data-remove>Remove</span>
+                </div>
+              </div>
+            `;
+          })
+          .join('');
+
+        itemsRoot.innerHTML = rows;
+        summaryCard.style.display = 'block';
+        document.getElementById('summary-subtotal').textContent = formatPKR(subtotal);
+        document.getElementById('summary-total').textContent = formatPKR(subtotal);
+
+        itemsRoot.querySelectorAll('.cart-item').forEach((row) => {
+          const id = row.dataset.id;
+          const item = cart.find((c) => c.id === id);
+          row.querySelector('[data-qty-minus]').addEventListener('click', () => {
+            updateCartQty(id, item.qty - 1);
+            render();
+          });
+          row.querySelector('[data-qty-plus]').addEventListener('click', () => {
+            updateCartQty(id, item.qty + 1);
+            render();
+          });
+          row.querySelector('[data-remove]').addEventListener('click', () => {
+            removeFromCart(id);
+            render();
+          });
+        });
+      }
+
+      render();
+    })();
+  </script>
+</body>
+</html>

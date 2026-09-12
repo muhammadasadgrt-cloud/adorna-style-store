@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Dashboard — Adorna Style</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/images/brand/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="/" class="brand">
+        <img src="/images/brand/logo.png" alt="Adorna Style logo">
+        <div>
+          <div class="brand-name">Adorna Style</div>
+          <span class="brand-tagline">Order Dashboard</span>
+        </div>
+      </a>
+      <button class="btn btn-outline" id="logout-btn" style="display:none;">Log out</button>
+    </div>
+  </header>
+
+  <div id="login-view" class="admin-login">
+    <h2>Admin Login</h2>
+    <p style="color:#8a7570; margin-bottom:20px;">Enter your admin token (from your .env file) to view incoming orders.</p>
+    <form id="login-form">
+      <div class="form-row">
+        <input type="password" id="admin-token" placeholder="Admin token" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">View Orders</button>
+    </form>
+    <p class="form-error" id="login-error" style="margin-top:16px;"></p>
+  </div>
+
+  <div id="orders-view" class="admin-wrap container" style="display:none;">
+    <div class="section-heading">
+      <h2>Orders</h2>
+      <button class="btn btn-outline" id="refresh-btn">Refresh</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="orders-table">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Total</th>
+            <th>Payment</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="orders-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script>
+    (function () {
+      const loginView = document.getElementById('login-view');
+      const ordersView = document.getElementById('orders-view');
+      const loginForm = document.getElementById('login-form');
+      const loginError = document.getElementById('login-error');
+      const logoutBtn = document.getElementById('logout-btn');
+      const TOKEN_KEY = 'adorna_admin_token';
+
+      function statusLabel(status) {
+        return status.replace(/_/g, ' ');
+      }
+
+      async function loadOrders(token) {
+        const res = await fetch('/api/admin/orders', { headers: { 'x-admin-token': token } });
+        if (!res.ok) {
+          throw new Error((await res.json()).error || 'Failed to load orders');
+        }
+        return res.json();
+      }
+
+      function renderOrders(orders) {
+        const tbody = document.getElementById('orders-body');
+        if (!orders.length) {
+          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px;">No orders yet.</td></tr>`;
+          return;
+        }
+        tbody.innerHTML = orders
+          .map((o) => `
+            <tr>
+              <td><strong>${o.id}</strong></td>
+              <td>${new Date(o.createdAt).toLocaleString('en-PK')}</td>
+              <td>${o.customer.name}<br><span style="color:#8a7570;">${o.customer.phone}</span><br><span style="color:#8a7570;">${o.customer.city}</span></td>
+              <td>${o.items.map((i) => `${i.name} × ${i.qty}`).join('<br>')}</td>
+              <td>${formatPKR(o.total)}</td>
+              <td>${o.paymentMethod}</td>
+              <td><span class="status-pill ${o.status}">${statusLabel(o.status)}</span></td>
+            </tr>
+          `)
+          .join('');
+      }
+
+      async function showOrders(token) {
+        try {
+          const orders = await loadOrders(token);
+          renderOrders(orders);
+          loginView.style.display = 'none';
+          ordersView.style.display = 'block';
+          logoutBtn.style.display = 'inline-flex';
+          sessionStorage.setItem(TOKEN_KEY, token);
+        } catch (err) {
+          loginError.textContent = err.message;
+          loginError.classList.add('show');
+        }
+      }
+
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        showOrders(document.getElementById('admin-token').value.trim());
+      });
+
+      document.getElementById('refresh-btn').addEventListener('click', () => {
+        const token = sessionStorage.getItem(TOKEN_KEY);
+        if (token) showOrders(token);
+      });
+
+      logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem(TOKEN_KEY);
+        ordersView.style.display = 'none';
+        loginView.style.display = 'block';
+        logoutBtn.style.display = 'none';
+      });
+
+      const savedToken = sessionStorage.getItem(TOKEN_KEY);
+      if (savedToken) showOrders(savedToken);
+    })();
+  </script>
+</body>
+</html>
