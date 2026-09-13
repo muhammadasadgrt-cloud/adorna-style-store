@@ -18,6 +18,12 @@
   <meta name="twitter:description" content="Discover stylish, affordable fashion accessories from statement jewelry to trendy bags.">
   <meta name="twitter:image" content="https://adornastyle.com/images/brand/hero-new-arrivals.png">
   <link rel="icon" href="/images/brand/logo.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#b76e79">
+  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Adorna Style">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -58,6 +64,7 @@
         <div class="hero-actions">
           <a href="/shop.html" class="btn btn-primary">Shop the Collection</a>
           <a href="/shop.html?category=necklaces" class="btn btn-outline">Explore Necklaces</a>
+          <button class="btn btn-outline" data-install-app hidden>📲 Install App</button>
         </div>
       </div>
       <div class="hero-image">
@@ -163,6 +170,7 @@
   <script src="/js/cart.js"></script>
   <script src="/js/api.js"></script>
   <script src="/js/render.js"></script>
+  <script src="/js/pwa.js"></script>
   <script>
     (async function () {
       const products = await Api.getProducts();
