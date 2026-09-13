@@ -47,6 +47,7 @@
             <th>Order ID</th>
             <th>Date</th>
             <th>Customer</th>
+            <th>Delivery Address</th>
             <th>Items</th>
             <th>Total</th>
             <th>Payment</th>
@@ -83,7 +84,7 @@
       function renderOrders(orders) {
         const tbody = document.getElementById('orders-body');
         if (!orders.length) {
-          tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px;">No orders yet.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:30px;">No orders yet.</td></tr>`;
           return;
         }
         tbody.innerHTML = orders
@@ -91,7 +92,8 @@
             <tr>
               <td><strong>${o.id}</strong></td>
               <td>${new Date(o.createdAt).toLocaleString('en-PK')}</td>
-              <td>${o.customer.name}<br><span style="color:#8a7570;">${o.customer.phone}</span><br><span style="color:#8a7570;">${o.customer.city}</span></td>
+              <td>${o.customer.name}<br><span style="color:#8a7570;">${o.customer.phone}</span></td>
+              <td style="max-width:220px;">${o.customer.fullAddress || [o.customer.address, o.customer.city, o.customer.postalCode].filter(Boolean).join(', ')}</td>
               <td>${o.items.map((i) => `${i.name} × ${i.qty}`).join('<br>')}</td>
               <td>${formatPKR(o.total)}</td>
               <td>${o.paymentMethod}</td>

@@ -60,13 +60,35 @@
               <input type="email" id="email">
             </div>
           </div>
-          <div class="form-row">
-            <label for="address">Delivery Address</label>
-            <textarea id="address" rows="2" required></textarea>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="houseNo">House / Flat No.</label>
+              <input type="text" id="houseNo" placeholder="e.g. House 12-B" required>
+            </div>
+            <div class="form-row">
+              <label for="street">Street / Road</label>
+              <input type="text" id="street" placeholder="e.g. Street 5" required>
+            </div>
           </div>
-          <div class="form-row">
-            <label for="city">City</label>
-            <input type="text" id="city" required>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="area">Area / Block / Sector</label>
+              <input type="text" id="area" placeholder="e.g. DHA Phase 6, Block C" required>
+            </div>
+            <div class="form-row">
+              <label for="landmark">Nearby Landmark (optional)</label>
+              <input type="text" id="landmark" placeholder="e.g. near ABC Bakers">
+            </div>
+          </div>
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="city">City</label>
+              <input type="text" id="city" required>
+            </div>
+            <div class="form-row">
+              <label for="postalCode">Postal Code</label>
+              <input type="text" id="postalCode" placeholder="e.g. 54000" required>
+            </div>
           </div>
           <div class="form-row">
             <label for="notes">Order Notes (optional)</label>
@@ -180,8 +202,12 @@
             name: document.getElementById('name').value.trim(),
             phone: document.getElementById('phone').value.trim(),
             email: document.getElementById('email').value.trim(),
-            address: document.getElementById('address').value.trim(),
+            houseNo: document.getElementById('houseNo').value.trim(),
+            street: document.getElementById('street').value.trim(),
+            area: document.getElementById('area').value.trim(),
+            landmark: document.getElementById('landmark').value.trim(),
             city: document.getElementById('city').value.trim(),
+            postalCode: document.getElementById('postalCode').value.trim(),
             notes: document.getElementById('notes').value.trim(),
           },
           items: cart,

@@ -12,8 +12,12 @@ const VALID_PAYMENT_METHODS = ['cod', 'jazzcash', 'easypaisa'];
 router.post('/', (req, res) => {
   const { customer, items, paymentMethod } = req.body || {};
 
-  if (!customer || !customer.name || !customer.phone || !customer.address || !customer.city) {
-    return res.status(400).json({ error: 'Please fill in your name, phone, address and city.' });
+  const requiredFields = ['name', 'phone', 'houseNo', 'street', 'area', 'city', 'postalCode'];
+  const missing = requiredFields.filter((f) => !customer || !String(customer[f] || '').trim());
+  if (missing.length > 0) {
+    return res.status(400).json({
+      error: 'Please fill in all required delivery details (name, phone, house/flat no., street, area, city, postal code).',
+    });
   }
   if (!Array.isArray(items) || items.length === 0) {
     return res.status(400).json({ error: 'Your cart is empty.' });
@@ -46,6 +50,18 @@ router.post('/', (req, res) => {
     });
   }
 
+  // One combined line for quick copy-paste into courier slips / WhatsApp.
+  const fullAddress = [
+    customer.houseNo,
+    customer.street,
+    customer.area,
+    customer.landmark ? `(${customer.landmark})` : '',
+    customer.city,
+    customer.postalCode,
+  ]
+    .filter(Boolean)
+    .join(', ');
+
   const order = {
     id: nanoid(10),
     createdAt: new Date().toISOString(),
@@ -53,8 +69,13 @@ router.post('/', (req, res) => {
       name: customer.name,
       phone: customer.phone,
       email: customer.email || '',
-      address: customer.address,
+      houseNo: customer.houseNo,
+      street: customer.street,
+      area: customer.area,
+      landmark: customer.landmark || '',
       city: customer.city,
+      postalCode: customer.postalCode,
+      fullAddress,
       notes: customer.notes || '',
     },
     items: lineItems,
